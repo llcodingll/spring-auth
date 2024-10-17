@@ -13,7 +13,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/api/v1/auth/login")
-    public UserResponse login(
+    public String login(
             @RequestBody LoginRequest loginRequest
     ) {
         return userService.login(loginRequest);
@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/api/v1/auth/me")
-    public UserResponse me(@RequestHeader("Authorization") String id){
-        return userService.getById(id);
+    public UserResponse me(@RequestHeader("Authorization") String token){
+        return userService.getByToken(token);
     }
 }
