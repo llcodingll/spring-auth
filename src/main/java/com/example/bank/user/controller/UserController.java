@@ -28,6 +28,8 @@ public class UserController {
 
     @GetMapping("/api/v1/auth/me")
     public UserResponse me(@RequestHeader("Authorization") String token){
-        return userService.getByToken(token);
+        // Bearer token
+        if (!token.startsWith("Bearer ")) throw new RuntimeException("토큰 틀림");
+        return userService.getByToken(token.substring(7));
     }
 }
