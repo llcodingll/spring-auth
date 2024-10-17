@@ -8,4 +8,5 @@ public interface UserService {
     UserResponse login(LoginRequest loginRequest);
     void register(RegisterRequest registerRequest);
     UserResponse getById(String id);
+    UserResponse getByToken(String token);
 }

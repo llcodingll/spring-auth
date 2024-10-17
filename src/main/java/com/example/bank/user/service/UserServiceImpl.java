@@ -1,5 +1,6 @@
 package com.example.bank.user.service;
 
+import com.example.bank.global.JwtUtils;
 import com.example.bank.user.domain.User;
 import com.example.bank.user.repository.UserRepository;
 import com.example.bank.user.request.LoginRequest;
@@ -15,6 +16,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final JwtUtils jwtUtils;
+
     @Override
     public UserResponse login(LoginRequest loginRequest) {
         Optional<User> loginUser = userRepository.findByEmail(loginRequest.email());
@@ -43,5 +46,13 @@ public class UserServiceImpl implements UserService {
         Optional<User> byId = userRepository.findById(uuid);
         if (byId.isEmpty()) throw new RuntimeException("없는 유저");
         return UserResponse.from(byId.get());
+    }
+
+    @Override
+    public UserResponse getByToken(String token) {
+        String username = jwtUtils.parseToken(token);
+        Optional<User> byUsername = userRepository.findByUsername(username);
+        if (byUsername.isEmpty()) throw new RuntimeException("없는 유저");
+        return UserResponse.from(byUsername.get());
     }
 }
