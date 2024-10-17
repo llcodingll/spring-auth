@@ -1,6 +1,5 @@
 package com.example.bank.user.domain;
 
-import com.example.bank.BankApplication;
 import com.example.bank.account.domain.Account;
 import com.example.bank.global.BaseEntity;
 import jakarta.persistence.*;
@@ -11,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,7 +23,7 @@ import java.util.List;
 )
 public class User extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false, unique = true)

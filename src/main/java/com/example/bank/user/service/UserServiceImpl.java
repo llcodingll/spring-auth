@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +35,13 @@ public class UserServiceImpl implements UserService {
         User entity = registerRequest.toEntity();
         userRepository.save(entity);
 
+    }
+
+    @Override
+    public UserResponse getById(String id) {
+        UUID uuid = UUID.fromString(id);
+        Optional<User> byId = userRepository.findById(uuid);
+        if (byId.isEmpty()) throw new RuntimeException("없는 유저");
+        return UserResponse.from(byId.get());
     }
 }
