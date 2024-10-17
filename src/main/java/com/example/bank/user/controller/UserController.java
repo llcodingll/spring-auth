@@ -1,10 +1,12 @@
 package com.example.bank.user.controller;
 
+import com.example.bank.user.domain.User;
 import com.example.bank.user.request.LoginRequest;
 import com.example.bank.user.request.RegisterRequest;
 import com.example.bank.user.response.UserResponse;
 import com.example.bank.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,9 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/api/v1/auth/me")
-    public UserResponse me(@RequestHeader("Authorization") String token){
-        // Bearer token
-        if (!token.startsWith("Bearer ")) throw new RuntimeException("토큰 틀림");
-        return userService.getByToken(token.substring(7));
+    public UserResponse me(@AuthenticationPrincipal User user){
+        return UserResponse.from(user);
     }
 }

@@ -7,6 +7,8 @@ import com.example.bank.user.request.LoginRequest;
 import com.example.bank.user.request.RegisterRequest;
 import com.example.bank.user.response.UserResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -46,6 +48,12 @@ public class UserServiceImpl implements UserService {
         Optional<User> byId = userRepository.findById(uuid);
         if (byId.isEmpty()) throw new RuntimeException("없는 유저");
         return UserResponse.from(byId.get());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username)  throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("없는 유저"));
     }
 
     @Override
