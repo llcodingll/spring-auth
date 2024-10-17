@@ -5,6 +5,7 @@ import com.example.bank.user.request.LoginRequest;
 import com.example.bank.user.request.RegisterRequest;
 import com.example.bank.user.response.UserResponse;
 import com.example.bank.user.service.UserService;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class UserController {
         userService.register(registerRequest);
     }
 
+    @RolesAllowed("ADMIN")
     @GetMapping("/api/v1/auth/me")
     public UserResponse me(@AuthenticationPrincipal User user){
         return UserResponse.from(user);
