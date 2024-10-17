@@ -19,13 +19,13 @@ public class UserServiceImpl implements UserService {
     private final JwtUtils jwtUtils;
 
     @Override
-    public UserResponse login(LoginRequest loginRequest) {
+    public String login(LoginRequest loginRequest) {
         Optional<User> loginUser = userRepository.findByEmail(loginRequest.email());
         if(loginUser.isEmpty()) throw new RuntimeException("로그인 실패");
         User user = loginUser.get();
         if(!user.getPassword().equals(loginRequest.password()))
             throw new RuntimeException("로그인 실패");
-        return UserResponse.from(user);
+        return jwtUtils.generateToken(user.getUsername());
     }
 
     @Override

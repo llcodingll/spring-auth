@@ -5,7 +5,7 @@ import com.example.bank.user.request.RegisterRequest;
 import com.example.bank.user.response.UserResponse;
 
 public interface UserService {
-    UserResponse login(LoginRequest loginRequest);
+    String login(LoginRequest loginRequest);
     void register(RegisterRequest registerRequest);
     UserResponse getById(String id);
     UserResponse getByToken(String token);
