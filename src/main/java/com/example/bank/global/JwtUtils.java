@@ -3,19 +3,29 @@ package com.example.bank.global;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 
+@Component
 public class JwtUtils {
+    private final long expiration;
+    private final SecretKey key;
+
+    public JwtUtils(
+            @Value("${jwt.expiration}") long expiration,
+            @Value("${jwt.secret}") String secret
+    ) {
+        System.out.println(expiration);
+        this.expiration = expiration;
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
     // generate-token
     public String generateToken(String username) {
-//        long expiration = 1000 * 60 * 60 * 24;
-        long expiration = 30000;
         Date expirationDate = new Date(System.currentTimeMillis() + expiration);
-        String secret = "qkdoqjbvjspfpekfnlfaldocfubwhelqkenfgakqjehudbsfsjdhf29404017303rhsdkkh87284949201009284ubdjskd123";
-        Key key = Keys.hmacShaKeyFor(secret.getBytes());
         return Jwts.builder()
                 .subject(username)
                 .expiration(expirationDate)
